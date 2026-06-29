@@ -1,14 +1,19 @@
 package kr.co.sboard.controller;
 
+import kr.co.sboard.DTO.AppInfoDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Log4j2
 @RequiredArgsConstructor
 @Controller
 public class UserController {
+
+    private final AppInfoDTO appInfo;
+
     @GetMapping("/user/info")
     public String info(){
 
@@ -16,7 +21,9 @@ public class UserController {
 
     }
     @GetMapping("/user/login")
-    public String login(){
+    public String login(Model model){
+
+        model.addAttribute(appInfo);
 
         return "/user/login";
 

@@ -27,8 +27,10 @@ public class FileEntity {
     private String ofname;
     private String sfname;
     private int download;
+
     @CreationTimestamp
     private LocalDateTime rdate;
+
     public FileDTO toDTO(){
         return FileDTO.builder()
                 .fno(fno)
