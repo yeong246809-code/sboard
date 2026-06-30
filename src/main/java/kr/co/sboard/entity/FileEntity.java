@@ -1,9 +1,6 @@
 package kr.co.sboard.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import kr.co.sboard.DTO.CommentDTO;
 import kr.co.sboard.DTO.FileDTO;
 import lombok.*;
@@ -18,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Entity
+@Table(name = "file")
 public class FileEntity {
 
     @Id

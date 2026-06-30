@@ -1,6 +1,7 @@
 package kr.co.sboard.service;
 
 import kr.co.sboard.DAO.UserDAO;
+import kr.co.sboard.DTO.UserCheckDTO;
 import kr.co.sboard.DTO.UserDTO;
 import kr.co.sboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,15 +24,38 @@ public class UserService {
     public List<UserDTO> getAll(){
         return null;
     }
+    public int getCount(UserCheckDTO dto){
+        int count = 0;
+        //jpa
+       if(dto.getType().equals("userid")){
+           count = rep.countByUserid(dto.getValue());
+       }else if(dto.getType().equals("nick")){
+           count = rep.countByNick(dto.getValue());
+       } else if (dto.getType().equals("hp")) {
+           count = rep.countByHp(dto.getValue());
+       } else if (dto.getType().equals("email")) {
+           count = rep.countByEmail(dto.getValue());
+           if(count == 0){
+               //인증코드 이메일 인증
+
+           }
+       }
+
+        return count;
+    }
     public void register(UserDTO dto){
+
+        dao.insert(dto);
+
 
 
     }
     public void modify(UserDTO dto){
 
     }
+
     public void remove(String userid){
-        
+
     }
 
 

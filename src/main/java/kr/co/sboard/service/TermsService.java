@@ -18,7 +18,20 @@ public class TermsService {
     private final TermsRepository rep;
 
     public TermsDTO get(int no){
-        return null;
+
+        // Mybatis
+        TermsDTO termsDTO = dao.select(1);
+
+        // JPA
+        /*
+        Optional<Terms> optTerms = repository.findById(1);
+
+        if(optTerms.isPresent()){
+            Terms entity = optTerms.get();
+            return entity.toDTO();
+        }
+        */
+        return termsDTO;
     }
     public List<TermsDTO> getAll(){
         return null;

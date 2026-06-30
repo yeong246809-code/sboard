@@ -7,18 +7,14 @@
 </head>
 <body>
     <div id="wrapper">
-        <header>
-            <h3>
-                <a href="/index.html" class="title">Board Project</a>
-            </h3>
-        </header>
+        <th:block th:include="~{/user/_head.html}"/>
         <main id="user">
             <section class="terms">
                 <h2 class="tit">사이트 이용약관</h2>
                 <table border="1">                    
                     <tr>
                         <td>
-                            <textarea name="terms">약관내용</textarea>
+                            <textarea name="terms">[[${tDTO.basic}]]</textarea>
                             <label><input type="checkbox" class="terms">&nbsp;동의합니다.</label>
                         </td>
                     </tr>
@@ -28,7 +24,7 @@
                 <table border="1">                    
                     <tr>
                         <td>
-                            <textarea name="privacy">약관내용</textarea>
+                            <textarea name="privacy">[[${tDTO.privacy}]]</textarea>
                             <label><input type="checkbox" class="privacy">&nbsp;동의합니다.</label>
                         </td>
                     </tr>
@@ -41,12 +37,7 @@
 
             </section>
         </main>
-        <footer>
-            <p>
-                <span class="copyright">Copyrightⓒ 김철학(개발에반하다.)</span>
-                <span class="version">v1.0.1</span>
-            </p>
-        </footer>
+        <th:block th:include="~{/user/_footer.html}"/>
     </div>    
 </body>
 </html>

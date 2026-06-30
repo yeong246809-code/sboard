@@ -4,4 +4,8 @@ import kr.co.sboard.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<UserEntity,String> {
+    int countByUserid(String userid);
+    int countByNick(String nick);
+    int countByHp(String hp);
+    int countByEmail(String email);
 }

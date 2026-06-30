@@ -11,6 +11,19 @@
     </select>
 
     <insert id="insert">
+
+        insert into user set
+                            userid=#{userid},
+                            pass=#{pass},
+                            name=#{name},
+                            nick=#{nick},
+                            email=#{email},
+                            hp=#{hp},
+                            addr1=#{addr1},
+                            addr2=#{addr2},
+                            regip=#{regip},
+                            rdate=NOW();
+
     </insert>
 
     <update id="update">
