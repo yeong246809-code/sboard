@@ -41,7 +41,7 @@ public class ArticleController {
 
         // 목록 데이터 가져오기
         //List<ArticleDTO> dtoList = articleService.getAll(pageRequestDTO);
-        List<ArticleDTO> dtoList = articleService.findAll(pageRequestDTO);
+        //List<ArticleDTO> dtoList = articleService.findAll(pageRequestDTO);
 
         // 모델 참조
         //model.addAttribute("dtoList", dtoList);
