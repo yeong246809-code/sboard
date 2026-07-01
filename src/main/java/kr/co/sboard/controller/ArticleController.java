@@ -1,10 +1,7 @@
 package kr.co.sboard.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kr.co.sboard.DTO.AppInfoDTO;
-import kr.co.sboard.DTO.ArticleDTO;
-import kr.co.sboard.DTO.FileDTO;
-import kr.co.sboard.DTO.PageRequestDTO;
+import kr.co.sboard.DTO.*;
 import kr.co.sboard.service.ArticleService;
 import kr.co.sboard.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import kr.co.sboard.DTO.PageResponseDTO;
 
 import java.util.List;
 
@@ -28,30 +25,16 @@ public class ArticleController {
 
 
     @GetMapping("/article/list")
-    public String list(Model model, @RequestParam(defaultValue = "1") int page, PageRequestDTO pageRequestDTO){
-        log.info(page);
-
-        int total = articleService.getTotal();
-        int start = articleService.getStart(page);
-        int lastPageNum = articleService.getLastPageNum(total);
-
-        int pageGroupStart = articleService.getPageGroupStart(page);
-        int pageGroupEnd = articleService.getPageGroupEnd(page, lastPageNum);
+    public String list(Model model, PageRequestDTO pageRequestDTO){
+        log.info(pageRequestDTO);
 
 
         // 목록 데이터 가져오기
-        //List<ArticleDTO> dtoList = articleService.getAll(pageRequestDTO);
-        //List<ArticleDTO> dtoList = articleService.findAll(pageRequestDTO);
+        //PageResponseDTO pageResponseDTO = articleService.getAll(pageRequestDTO);
+        PageResponseDTO pageResponseDTO = articleService.findAll(pageRequestDTO);
 
         // 모델 참조
-        //model.addAttribute("dtoList", dtoList);
-        model.addAttribute("lastPageNum", lastPageNum);
-        model.addAttribute("page", page);
-        model.addAttribute("pageGroupStart", pageGroupStart);
-        model.addAttribute("pageGroupEnd", pageGroupEnd);
-        model.addAttribute("total", total);
-
-
+        model.addAttribute(pageResponseDTO);
 
         return "/article/list";
     }

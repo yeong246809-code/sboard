@@ -7,6 +7,7 @@ import kr.co.sboard.DTO.ArticleDTO;
 import kr.co.sboard.DTO.PageRequestDTO;
 import kr.co.sboard.DTO.PageResponseDTO;
 import kr.co.sboard.entity.ArticleEntity;
+import kr.co.sboard.entity.UserEntity;
 import kr.co.sboard.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -48,37 +49,53 @@ public class ArticleService {
         return start;
     }
 
+
     public int getTotal(){
         return dao.selectCountAll();
     }
 
     public PageResponseDTO getAll(PageRequestDTO pageRequestDTO){
 
+
         // Mybatis
         List<ArticleDTO> dtoList = dao.selectAll(pageRequestDTO);
 
+        int total = dao.selectCountAll();
 
 
         return PageResponseDTO.builder()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
-                .total(0)
+                .total(total)
                 .build();
     }
 
-    public List<ArticleDTO> findAll(PageRequestDTO pageRequestDTO){
+    public PageResponseDTO findAll(PageRequestDTO pageRequestDTO){
         // JPA에서 페이징 처리를 위한 객체
         Pageable pageable = pageRequestDTO.getPageable("ano");
 
         Page<ArticleEntity> pageArticle = rep.findAll(pageable);
 
-        List<ArticleEntity> entityList = rep.findAll();
-
-        List<ArticleDTO> dtoList = entityList
+        List<ArticleDTO> dtoList = pageArticle.getContent()
                 .stream()
-                .map(entity -> entity.toDTO())
+                .map(entity -> {
+                    ArticleDTO dto = entity.toDTO();
+
+                    UserEntity user = entity.getUser();
+
+                    dto.setNick(user.getNick());
+
+                    return dto;
+                })
                 .toList();
-        return dtoList;
+
+        int total = (int) rep.count();
+
+        return PageResponseDTO.builder()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total(total)
+                .build();
     }
 
     public void register(ArticleDTO dto){
