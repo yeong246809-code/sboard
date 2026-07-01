@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import kr.co.sboard.DTO.AppInfoDTO;
 import kr.co.sboard.DTO.ArticleDTO;
 import kr.co.sboard.DTO.FileDTO;
+import kr.co.sboard.DTO.PageRequestDTO;
 import kr.co.sboard.service.ArticleService;
 import kr.co.sboard.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class ArticleController {
 
 
     @GetMapping("/article/list")
-    public String list(Model model, @RequestParam(defaultValue = "1") int page){
+    public String list(Model model, @RequestParam(defaultValue = "1") int page, PageRequestDTO pageRequestDTO){
         log.info(page);
 
         int total = articleService.getTotal();
@@ -39,11 +40,11 @@ public class ArticleController {
 
 
         // 목록 데이터 가져오기
-        List<ArticleDTO> dtoList = articleService.getAll(start);
-        //List<ArticleDTO> dtoList = articleService.findAll();
+        //List<ArticleDTO> dtoList = articleService.getAll(pageRequestDTO);
+        List<ArticleDTO> dtoList = articleService.findAll(pageRequestDTO);
 
         // 모델 참조
-        model.addAttribute("dtoList", dtoList);
+        //model.addAttribute("dtoList", dtoList);
         model.addAttribute("lastPageNum", lastPageNum);
         model.addAttribute("page", page);
         model.addAttribute("pageGroupStart", pageGroupStart);

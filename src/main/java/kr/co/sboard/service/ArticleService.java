@@ -4,10 +4,14 @@ import kr.co.sboard.DAO.ArticleDAO;
 import kr.co.sboard.DTO.ArticleDTO;
 import kr.co.sboard.DAO.ArticleDAO;
 import kr.co.sboard.DTO.ArticleDTO;
+import kr.co.sboard.DTO.PageRequestDTO;
+import kr.co.sboard.DTO.PageResponseDTO;
 import kr.co.sboard.entity.ArticleEntity;
 import kr.co.sboard.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,19 +52,26 @@ public class ArticleService {
         return dao.selectCountAll();
     }
 
-    public List<ArticleDTO> getAll(int start){
+    public PageResponseDTO getAll(PageRequestDTO pageRequestDTO){
 
         // Mybatis
-        List<ArticleDTO> dtoList = dao.selectAll(start);
+        List<ArticleDTO> dtoList = dao.selectAll(pageRequestDTO);
 
 
 
-        return dtoList;
+        return PageResponseDTO.builder()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total(0)
+                .build();
     }
 
-    public List<ArticleDTO> findAll(){
+    public List<ArticleDTO> findAll(PageRequestDTO pageRequestDTO){
+        // JPA에서 페이징 처리를 위한 객체
+        Pageable pageable = pageRequestDTO.getPageable("ano");
 
-        // JPA
+        Page<ArticleEntity> pageArticle = rep.findAll(pageable);
+
         List<ArticleEntity> entityList = rep.findAll();
 
         List<ArticleDTO> dtoList = entityList

@@ -27,11 +27,6 @@ class ArticleDAOTest {
     @Test
     void selectAll() {
 
-        List<ArticleDTO> dtoList = dao.selectAll();
-
-
-
-        log.info(dtoList);
     }
 
     @Test
