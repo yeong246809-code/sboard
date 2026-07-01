@@ -28,7 +28,9 @@ public class MyUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //권한 목록 생성
         List<GrantedAuthority> auList = new ArrayList<>();
-        auList.add(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
+        String role = user.getRole().toUpperCase();
+
+        auList.add(new SimpleGrantedAuthority("ROLE_" + role));
 
 
         return auList;

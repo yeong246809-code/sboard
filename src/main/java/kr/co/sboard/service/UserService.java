@@ -6,6 +6,7 @@ import kr.co.sboard.DTO.UserDTO;
 import kr.co.sboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class UserService {
 
     private final UserDAO dao;
     private final UserRepository rep;
+    private final PasswordEncoder passwordEncoder;
 
     public UserDTO get(String userid){
         return null;
@@ -35,19 +37,19 @@ public class UserService {
            count = rep.countByHp(dto.getValue());
        } else if (dto.getType().equals("email")) {
            count = rep.countByEmail(dto.getValue());
-           if(count == 0){
-               //인증코드 이메일 인증
-
-           }
        }
 
         return count;
     }
     public void register(UserDTO dto){
+        String encoded = passwordEncoder.encode(dto.getPass());
+        dto.setPass(encoded);
 
+        // Mybatis
         dao.insert(dto);
 
-
+        // JPA
+        //repository.save(dto.toEntity());
 
     }
     public void modify(UserDTO dto){

@@ -1,10 +1,13 @@
 package kr.co.sboard.controller;
 
+import jakarta.mail.Session;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import kr.co.sboard.DTO.AppInfoDTO;
 import kr.co.sboard.DTO.TermsDTO;
 import kr.co.sboard.DTO.UserCheckDTO;
 import kr.co.sboard.DTO.UserDTO;
+import kr.co.sboard.service.Emailservice;
 import kr.co.sboard.service.TermsService;
 import kr.co.sboard.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -27,22 +30,24 @@ public class UserController {
 
     private final UserService us;
     private final TermsService ts;
+    private final Emailservice es;
+
 
     @GetMapping("/user/info")
     public String info(){
 
-        return "user/info";
+        return "/user/info";
 
     }
     @GetMapping("/user/login")
     public String login(){
 
-        return "user/login";
+        return "/user/login";
 
     }
     @GetMapping("/user/register")
     public String register(){
-        return "user/register";
+        return "/user/register";
 
     }
 
@@ -65,19 +70,25 @@ public class UserController {
     public String terms(Model model){
 
         TermsDTO tDTO = ts.get(1);
+        log.info(tDTO);
 
-        model.addAttribute("tDTO",tDTO);
+        model.addAttribute(tDTO);
 
-        return "user/terms";
+        return "/user/terms";
 
     }
 
     @ResponseBody
     @GetMapping("/user/check")
-    public ResponseEntity<Map<String, Integer>> check(UserCheckDTO dto){
+    public ResponseEntity<Map<String, Integer>> check(UserCheckDTO dto, HttpSession session){
         log.info(dto);
 
         int count = us.getCount(dto);
+
+        if(dto.getType().equals("email") && count == 0){
+            String code = es.sendcode(dto.getValue());
+            session.setAttribute("sesscode", code);
+        }
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -88,17 +99,25 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/user/check")
-    public ResponseEntity<Map<String, Integer>> check(@RequestBody Map<String,String> jsondata){
+    public ResponseEntity<Map<String, Integer>> check(@RequestBody Map<String,String> jsondata, HttpSession session){
 
-        log.info(jsondata);
+        log.info(jsondata.get("code"));
+        //세션에 저장된 코드와 클라이언트가 전송한 코드가 일치하는 경우
+        String sesscode = (String) session.getAttribute("sesscode");
 
-        int count = 1;
+        String jsoncode = jsondata.get("code");
 
+        if(sesscode.equals(jsoncode)){
 
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(Map.of("count", 0));
+        }
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(Map.of("count", 1));
+
     }
 
 

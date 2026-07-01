@@ -30,7 +30,7 @@ public class SecurityConfig {
         //인가 설정
         httpsecurity.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/article/**").hasAnyRole("ADMIN", "MANAGER", "MEMBER")
                 .requestMatchers("/manager/**").hasAnyRole("ADMIN","MANAGER")
                 .requestMatchers("/member/**").hasAnyRole("ADMIN","MANAGER","MEMBER")
                 .anyRequest().permitAll()

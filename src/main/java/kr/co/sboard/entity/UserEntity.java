@@ -32,7 +32,7 @@ public class UserEntity {
     private String regip;
 
     @CreationTimestamp
-    private LocalDateTime regDate;
+    private LocalDateTime rDate;
     private LocalDateTime leaveDate;
     public UserDTO toDTO(){
 
@@ -48,7 +48,7 @@ public class UserEntity {
                 .addr1(addr1)
                 .addr2(addr2)
                 .regip(regip)
-                .regDate(regDate.toString())
+                .rDate(rDate.toString())
                 .leaveDate(leaveDate.toString())
                 .build();
 

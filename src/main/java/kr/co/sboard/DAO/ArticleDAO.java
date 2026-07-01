@@ -11,7 +11,10 @@ public interface ArticleDAO {
 
     public void insert(ArticleDTO dto);
     public ArticleDTO select(int ano);
-    public List<ArticleDTO> selectAll();
+    public List<ArticleDTO> selectAll(int start);
+
+    public int selectCountAll();
+
     public void update(ArticleDTO dto);
     public void delete(int ano);
 }
