@@ -68,6 +68,5 @@ jobs:
             pgrep java | xargs kill -9;
             nohup java -jar /home/${{ secrets.AWS_EC2_USER }}/$JAR_FILE > app.log 2>&1 &
           EOF
-
       - name: Cleanup
         run: rm -f private_key.pem
