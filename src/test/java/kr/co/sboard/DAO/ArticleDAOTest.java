@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class ArticleDAOTest {
 
     private ArticleDAO dao;
-
     @Test
     void insert() {
     }
